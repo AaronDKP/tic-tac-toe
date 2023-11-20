@@ -39,8 +39,6 @@ const game = (function () {
         const p1Selected = [];
         const p2Selected = [];
         const winCombo = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
-        let p1Score = 0;
-        let p2Score = 0;
 
             for(let i = 0; i < 5; i++){
 
@@ -48,37 +46,52 @@ const game = (function () {
                     return arr1.every(item => arr2.includes(item));
                 }
 
-                const p1input = prompt('PLAYER *1* PICK NUMBER BETWEEN 0-8');
+                let p1input = prompt('PLAYER *1* PICK NUMBER BETWEEN 0-8');
         
                 for (cell of cells) {
-                    if (p1input == cell) {
+                    if (p1input == cell && p1Selected.includes(cell)) {
+                        p1input = prompt(`${cell} already selected, try again between 0-8`);
+                    } else if (p1input == cell && p2Selected.includes(cell)) {
+                        p1input = prompt(`${cell} already selected, try again between 0-8`);
+                    } else if (p1input == cell && !p1Selected.includes(cell)) {
                         p1Selected.push(cell);
+                        console.log(p1Selected);
                     }
                 }
 
                 for (combo of winCombo) {
                     if(findCommonElements(combo, p1Selected)) {
-                        p1Score++;
-                        console.log(`p1 score = ${p1Score}`);
+                        alert('Player 1 Wins!')
                         return;
                     }
                 }
 
-                const p2input = prompt('PLAYER *2* PICK NUMBER BETWEEN 0-8');
+                let p2input = prompt('PLAYER *2* PICK NUMBER BETWEEN 0-8');
 
                 for (cell of cells) {
-                    if (p2input == cell) {
+                    if (p2input == cell && p1Selected.includes(cell)) {
+                        p2input = prompt(`${cell} already selected, try again between 0-8`);
+                    } else if (p2input == cell && p2Selected.includes(cell)) {
+                        p2input = prompt(`${cell} already selected, try again between 0-8`);
+                    } else if (p2input == cell && !p2Selected.includes(cell)) {
                         p2Selected.push(cell);
+                        console.log(p2Selected);
                     }
                 }
 
                 for (combo of winCombo) {
                     if(findCommonElements(combo, p2Selected)) {
-                        p2Score++;
-                        console.log(`p2 score = ${p2Score}`);
+                        alert('Player 2 Wins!')
                         return;
                     }
                 }
+
+                const totalSelected = p1Selected.concat(p2Selected);
+
+                if (totalSelected.includes(0, 1, 2, 3, 4, 5, 6, 7, 8)) {
+                    alert(`It's a Tie!`);
+                }
+
             }
 
     }
