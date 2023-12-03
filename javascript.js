@@ -9,47 +9,29 @@ const gameboard = (function() {
 
 })();
 
-console.table(gameboard);
-
 
 const players = (function() {
     const player1 = (function() {
-        const charSelection = 'x';
+        const charSelection = 'X';
+        const name = 'Player 1';
 
-        let p1input = function () {
-            const cells = document.querySelectorAll('.cell');
-
-            for (let cell of cells) {
-                cell.addEventListener('click', (e) => {
-                    cell.textContent = charSelection;
-
-                    let cellId = e.target.id;
-
-                    if (cellId !== ''){
-                        console.log(`p1input = ${cellId}`);
-                        return cellId;
-                    }
-                    
-                })
-            }
-        }
-
-        return {charSelection};
+        return {charSelection, name};
     })();
 
     const player2 = (function() {
-        const charSelection = 'o';
+        const charSelection = 'O';
+        const name = 'Player 2';
 
-        return {charSelection}
+        return {charSelection, name}
     })();
 
     return {player1, player2};
 })();
 
 
-
 const game = (function () {
     const cells = gameboard.gameCells;
+    const btns = document.querySelectorAll('.cell');
 
     function playRound() {
 
@@ -57,78 +39,79 @@ const game = (function () {
         const p2Selected = [];
         const winCombo = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
 
+        let player1 = players.player1;
+        let player2 = players.player2;
+
+        let currentPlayer = player1;
+        let currentSelected = p1Selected;
+
         const findCommonElements = function(arr1, arr2) {
             return arr1.every(item => arr2.includes(item));
         }
 
+        const input = (function() {
+            for (let btn of btns) {
+                btn.addEventListener('click', (e) => {
+                    let playerName = currentPlayer.name;
+                    let charSelection = currentPlayer.charSelection;
 
-        let p1CharSelection = players.player1.charSelection;
+                    btn.textContent = charSelection;
 
-        const btns = document.querySelectorAll('.cell');
+                    let cellId = e.target.id;
 
-        for (let btn of btns) {
-            btn.addEventListener('click', (e) => {
-                btn.textContent = p1CharSelection;
-
-                let cellId = e.target.id;
-
-                if (cellId !== ''){
-                    console.log(`p1input = ${cellId}`);
-                }
-
-                for (let cell of cells) {
-                    if (cellId == cell && p1Selected.includes(cell)) {
-                        cellId = prompt(`${cell} already selected, try again between 0-8`);
-                    } else if (cellId == cell && p2Selected.includes(cell)) {
-                        cellId = prompt(`${cell} already selected, try again between 0-8`);
-                    } else if (cellId == cell && !p1Selected.includes(cell)) {
-                        p1Selected.push(cell);
-                        console.log(p1Selected);
+                    if (cellId !== ''){
+                        console.log(`${playerName} input = ${cellId}`);
                     }
-                }
-        
-                for (combo of winCombo) {
-                    if(findCommonElements(combo, p1Selected)) {
-                        console.log('Player 1 Wins!')
-                        return;
+
+
+                    if (currentPlayer === player1) {
+                        currentSelected = p1Selected;
+                    } else if (currentPlayer === player2) {
+                        currentSelected = p2Selected;
                     }
-                }
-                
-            })
-        };
 
 
-        // let p2input = prompt('PLAYER *2* PICK NUMBER BETWEEN 0-8');
+                    for (let cell of cells) {
+                        if (cellId == cell && p1Selected.includes(cell)) {
+                            alert(`${cell} already selected, try again between 0-8`);
+                        } else if (cellId == cell && p2Selected.includes(cell)) {
+                            alert(`${cell} already selected, try again between 0-8`);
+                        } else if (cellId == cell && !currentSelected.includes(cell)) {
+                            currentSelected.push(cell);
+                            console.log(`  p1Selected = ${p1Selected}`);
+                            console.log(`  p2Selected = ${p2Selected}`);
+                        }
+                    }
+            
 
-        // for (let cell of cells) {
-        //     if (p2input == cell && p1Selected.includes(cell)) {
-        //         p2input = prompt(`${cell} already selected, try again between 0-8`);
-        //     } else if (p2input == cell && p2Selected.includes(cell)) {
-        //         p2input = prompt(`${cell} already selected, try again between 0-8`);
-        //     } else if (p2input == cell && !p2Selected.includes(cell)) {
-        //         p2Selected.push(cell);
-        //         console.log(p2Selected);
-        //     }
-        // }
-
-        // for (combo of winCombo) {
-        //     if(findCommonElements(combo, p2Selected)) {
-        //         console.log('Player 2 Wins!')
-        //         return;
-        //     }
-        // }
-
-        // const totalSelected = p1Selected.concat(p2Selected);
+                    for (combo of winCombo) {
+                        if(findCommonElements(combo, currentSelected)) {
+                            console.log(`${playerName} Wins!`)
+                            return;
+                        }
+                    }
 
 
-        //                  //test with GUI to ensure TIE is shown when all choices exhausted
+                    if (btn.textContent == 'X' || btn.textContent == 'O'){
+                        if (currentPlayer === player1){
+                            currentPlayer = player2;
+                        } else {
+                            currentPlayer = player1;
+                        }
+                    }
 
-        // const incAll = (array, data) => data.every(v => array.includes(v));
-        // const allTiles = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+                    const totalSelected = p1Selected.concat(p2Selected);
 
-        // if (incAll(totalSelected, allTiles)){
-        //     console.log(`It's a Tie!`);
-        // }
+                    const incAll = (array, data) => data.every(v => array.includes(v));
+                    const allTiles = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+            
+                    if (incAll(totalSelected, allTiles)){
+                        console.log(`It's a Tie!`);
+                    }
+                })
+            }
+
+        })();
 
     }
 
