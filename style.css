@@ -39,15 +39,76 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 100px;
     height: 100%;
     width: 100%;
-    background-color: #eee;
-    font-size: 3.6em;
+    background: none;
+    font-size: 7em;
+    text-align: center;
 }
 
 #startScreen>h1 {
-    margin: 0 40px;
+    margin: -25px 50%;
+    color: #eee;
+    text-shadow: 2px 2px 7px rgba(0,0,0,0.3);
+    letter-spacing: 10px;
+}
+
+#startButton {
+    margin-top: 40px;
+    height: 50px;
+    width: 400px;
+    font-size: 60px;
+    font-weight: 700;
+    background: none;
+    border: none;
+    color: #eee;
+    text-shadow: 2px 2px 7px rgba(0,0,0,0.3);
+}
+
+#startButton:hover {
+    text-shadow: 2px 2px 7px rgba(0,0,0,0.4);
+}
+
+#startButton:active {
+    text-shadow: 2px 2px 7px rgba(0,0,0,0.5);
+}
+
+#resultsScreen {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background: none;
+    font-size: 3em;
+    text-align: center;
+    color: #eee;
+    text-shadow: 2px 2px 7px rgba(0,0,0,0.3);
+}
+
+#resultsScreen>h1 {
+    text-shadow: 2px 2px 7px rgba(0,0,0,0.3);
+}
+
+#retryBtn {
+    margin-top: 40px;
+    height: 50px;
+    width: 400px;
+    font-size: 60px;
+    font-weight: 700;
+    background: none;
+    border: none;
+    color: #eee;
+    text-shadow: 2px 2px 7px rgba(0,0,0,0.3);
+}
+
+#retryBtn:hover {
+    text-shadow: 2px 2px 7px rgba(0,0,0,0.4);
+}
+
+#retryBtn:active {
+    text-shadow: 2px 2px 7px rgba(0,0,0,0.5);
 }
 
 #gameContainer {
@@ -92,8 +153,24 @@ button.cell:hover {
     text-shadow: 2px 2px 7px rgba(0,0,0,0.4);
 }
 
-button:active {
+button.cell:active {
     box-shadow: inset 0px 0px 20px -10px rgba(0,0,0,0.2);
+}
+
+button.cell.win {
+    background-color:rgb(127, 255, 212, 0.3);
+    transition: 2s;
+}
+
+button.cell.loss {
+    background-color: rgb(250, 160, 160, 0.4);
+    transition: 2s;
+}
+
+button.cell.selected:active {
+    box-shadow: inset 0px 0px 20px -10px rgba(0,0,0,0.2);
+    background-color: rgb(250, 160, 160, 0.4);
+    transition: 0.2s;
 }
 
 footer {
@@ -103,7 +180,7 @@ footer {
     padding: 30px 0;
     background-image: linear-gradient(0deg, #ddd, #eee);
     color: #eee;
-    text-shadow: 1px 1px 10px #ddd;
+    text-shadow: 2px 2px 7px rgba(0,0,0,0.2);
     font-size: 1em;
     font-weight: 700;
     width: 100%;
